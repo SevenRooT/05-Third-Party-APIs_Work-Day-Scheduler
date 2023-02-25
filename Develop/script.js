@@ -5,6 +5,13 @@ $(document).ready(function () {
 
   // variables to initialize when page loads
   const currentDay = $("#currentDay");
+  // empty array for individual events by hour of day
+  //let storedEvent_ = [];
+  // get element by ID -- save buttons and text boxes
+  const saveBtn = $(".saveBtn");
+  const description = $(".description");
+  // assigning variable name to calendar rows
+  const row = $(".row");
 
   /*const hour9 = $("#hour-9");
   const hour10 = $("#hour-10");
@@ -25,7 +32,7 @@ $(document).ready(function () {
               $(#hour - 14): 14,
                 $(#hour - 15): 15,
                   $(#hour - 16): 16,
-                    $(#hour - 17): 17
+                    $(#hour - 17): 17 
   }*/
   // creating an oject
 
@@ -41,10 +48,6 @@ $(document).ready(function () {
     hour: 17
   }
 
-  // empty array for individual events by hour of day
-  let storedEvent_ = [];
-
-
   // set the current time/day/month at top of the page
   function currentTime() {
     var rightNow = dayjs().format('MMM DD, YYYY [at] hh:mm:ss a');
@@ -58,18 +61,18 @@ $(document).ready(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
 
-  // get element by ID -- save buttons and text boxes
-  const saveBtn = $(".saveBtn");
-  const description = $(".description");
-  const row = $(".row");
+
 
   // function to capture value of text box and place in local storage
-  saveBtn.click(function () {
-    let rowNumber = row[index];
-
-    let newEvent = "storedEvent_" + rowNumber;
+  saveBtn.click(function (description, row) {
+    // captures value from text field
     const descriptionValue = description.val(); //text box value
-    localStorage.setItem(storedEvent, JSON.stringify(descriptionValue));
+    // searches for unique id from all in the .row class
+    const rowId = $(row).attr("id");
+    // concatenate id to row for keying into local storage
+    const eventStorage = "Event Time in 24 format:" + rowId || [];
+    // save into local storage
+    localStorage.setItem(eventStorage, JSON.stringify(descriptionValue));
   })
 
   // TODO: Add code to apply the past, present, or future class to each time
@@ -86,7 +89,7 @@ $(document).ready(function () {
   }
 
   // early non-functional frame work of comparison module for row colors
-  function pastPresentFuture() {
+  /*function pastPresentFuture() {
     //look at the value of each id associated with a particular time block
 
     //compare that value with the current value of hour24
@@ -104,7 +107,7 @@ $(document).ready(function () {
         someThing = #future;
       }
     }
-  }
+  }*/
   //
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
