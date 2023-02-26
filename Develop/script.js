@@ -9,9 +9,13 @@ $(document).ready(function () {
   //let storedEvent_ = [];
   // get element by ID -- save buttons and text boxes
   const saveBtn = $(".saveBtn");
-  const description = $(".description");
+  //const description = $(".description");
   // assigning variable name to calendar rows
   const row = $(".row");
+
+  let hour24 = "";
+
+  //let globalRow = [];
 
   /*const hour9 = $("#hour-9");
   const hour10 = $("#hour-10");
@@ -54,42 +58,75 @@ $(document).ready(function () {
     currentDay.text(rightNow);
   }
 
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-
 
 
   // function to capture value of text box and place in local storage
-  saveBtn.click(function (description, row) {
+  saveBtn.click(function () {
     // captures value from text field
-    const descriptionValue = description.val(); //text box value
+    const descriptionValue = $(this).siblings('.description').val(); //text box value
+    console.log("1st this:", $(this));
+    console.log("1st this sibling:", $(this.siblings));
+    /* $(this) is getting the value for the particular button element of .row, allowing sorting from all of the .row buttons available */
     // searches for unique id from all in the .row class
-    const rowId = $(row).attr("id");
+    const rowId = $(this).parent().attr('id');
+    console.log("2nd this:", $(this));
+    console.log("2nd this parent:", $(this).parent);
     // concatenate id to row for keying into local storage
-    const eventStorage = "Event Time in 24 format:" + rowId || [];
+
     // save into local storage
-    localStorage.setItem(eventStorage, JSON.stringify(descriptionValue));
+    localStorage.setItem(rowId, descriptionValue);
+    //globalRow = rowId;
+    //console.log("gR1:", globalRow);
   })
 
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
   // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
+  // past, present, and future classes?
 
   // logs the current hour as a single digit for comparison to calendar row
   // to be used as reference point when determining the proper color of row item
   function format24() {
-    let hour24 = dayjs().format("H");
+    hour24 = dayjs().format("H");
     console.log("24 hour time:", hour24);
   }
 
   // early non-functional frame work of comparison module for row colors
-  /*function pastPresentFuture() {
+  function pastPresentFuture() {
+
+    // gather all ids into an array
+    function getRowIdsByClass(row) {
+      const allIds = [];
+      $(row).each(function () {
+        const id = $(this).attr("id");
+
+        if (id && !allIds.includes(id)) {
+          allIds.push(id);
+        }
+      })
+      return allIds;
+    }
+    const allRowIds = getRowIdsByClass(row);
+
+    console.log("rowId", allRowIds);
+
+    let compare = 0;
+
+    while (compare < allRowIds.length) {
+      for (let i = 0; i < allRowIds.length; i += 1) {
+        if (hour24 !== allRowIds[i]) {
+          if (hour24 < allRowIds[i]) {
+            $(row).addClass("#past");
+          } else if (hour24 > allRowIds[i]) {
+            $(row).addClass("#future");
+          } else {
+            $(row).addClass("#present")
+          };
+        }
+      }
+      compare++
+    }
+
     //look at the value of each id associated with a particular time block
 
     //compare that value with the current value of hour24
@@ -97,7 +134,7 @@ $(document).ready(function () {
     //if less than hour24, assign "past"
     //if equal to hour24, assign "present"
     //if greater than hour24, assign "future"
-    for (let key in value) {
+    /*for (let key in value) {
 
       if (compareHours.value[key] < hour24) {
         someThing = #past; //toggle css style
@@ -106,15 +143,15 @@ $(document).ready(function () {
       } else {
         someThing = #future;
       }
-    }
-  }*/
+    }*/
+  }
   //
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
+
   currentTime();
   setInterval(currentTime, 1000);
   format24();
+  pastPresentFuture()
 });
