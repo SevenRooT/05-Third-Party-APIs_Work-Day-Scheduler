@@ -110,22 +110,22 @@ $(document).ready(function () {
 
     console.log("rowId", allRowIds);
 
-    let compare = 0;
+    //let compare = 0;
 
-    while (compare < allRowIds.length) {
-      for (let i = 0; i < allRowIds.length; i += 1) {
-        if (hour24 !== allRowIds[i]) {
-          if (hour24 < allRowIds[i]) {
-            $(row).addClass("#past");
-          } else if (hour24 > allRowIds[i]) {
-            $(row).addClass("#future");
-          } else {
-            $(row).addClass("#present")
-          };
-        }
+    //while (compare < allRowIds.length) {
+    for (let i = 0; i < allRowIds.length; i += 1) {
+      if (hour24 !== allRowIds[i]) {
+        if (hour24 < allRowIds[i]) {
+          $(row).addClass("#past");
+        } else if (hour24 > allRowIds[i]) {
+          $(row).addClass("#future");
+        } else {
+          $(row).addClass("#present")
+        };
       }
-      compare++
     }
+    // compare++
+    //}
 
     //look at the value of each id associated with a particular time block
 
